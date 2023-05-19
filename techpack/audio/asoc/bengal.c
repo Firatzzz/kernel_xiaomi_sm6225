@@ -1036,7 +1036,11 @@ static int aw87xxx_spk_pa_mode_get(struct snd_kcontrol *kcontrol,
 		struct snd_ctl_elem_value *ucontrol)
 {
 	int current_mode = 0;
+#if defined(CONFIG_TARGET_PROJECT_C3Q)
+	current_mode = aw87xxx_show_current_profile_index(0);
+#else
 	current_mode = aw87xxx_show_current_profile_index(1);
+#endif
 	ucontrol->value.integer.value[0] = current_mode;
 	pr_debug("%s: get mode:%d\n", __func__, current_mode);
 	return 0;
@@ -1083,7 +1087,7 @@ static DEFINE_MUTEX(g_aw_dsp_lock);
 extern int afe_get_topology(int port_id);
 extern int aw_send_afe_cal_apr(uint32_t param_id,
 	void *buf, int cmd_size, bool write);
-extern int aw_check_dsp_ready(void);
+extern aw_check_dsp_ready(void);
 enum {
 	AW_SPIN_0 = 0,
 	AW_SPIN_90,
